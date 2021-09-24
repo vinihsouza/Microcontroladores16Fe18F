@@ -1,0 +1,48 @@
+
+ROM used: 682 (2%)
+          682 (2%) including unused fragments
+
+          1 Average locations per line
+          6 Average locations per statement
+
+RAM used: 33 (2%) at main() level
+          34 (2%) worst case
+
+Stack used: 3 worst case (out of 30 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+  120   119 100  18F4520.c
+  438     0   0  ..\..\..\..\Program Files (x86)\PICC\devices\18F4520.h
+----- -----
+  558   119 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     40   3   1             @delay_ms1
+0     30   2   0    72  2.7  interrupt
+0    342  25   1  2305  8.4  MAIN
+0     84   6   2   409  5.2  contagem
+0     32   2   0   147  3.9  espera
+
+Program metrics:
+    Functions               4
+    Statements              119
+    Comments                181
+    Volume (V)              3499
+    Difficilty (D)          20.9
+    Effort to implement (E) 73255
+    Time to implement (T)   1 hours, 8 minutes
+    Est Delivered Bugs (B)  1
+    Cyclomatic Complexity   19
+    Maintainability (MI)    38
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     4  0  
+00004-00006     0  4  
+00008-0009C   150  0  
+0009E-07FFE   528  32082  
+
+
+

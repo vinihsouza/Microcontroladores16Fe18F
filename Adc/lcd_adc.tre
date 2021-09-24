@@ -1,0 +1,15 @@
+ÀÄlcd_adc
+   ÀÄmain  0/87  Ram=0
+      ÃÄ??0??
+      ÃÄposte  0/67  Ram=1
+      ³  ÃÄ@delay_ms1  0/21  Ram=1
+      ³  ÃÄ@delay_ms1  0/21  Ram=1
+      ³  ÀÄ@delay_ms1  0/21  Ram=1
+      ÃÄposte  0/67  Ram=1
+      ³  ÃÄ@delay_ms1  0/21  Ram=1
+      ³  ÃÄ@delay_ms1  0/21  Ram=1
+      ³  ÀÄ@delay_ms1  0/21  Ram=1
+      ÀÄposte  0/67  Ram=1
+         ÃÄ@delay_ms1  0/21  Ram=1
+         ÃÄ@delay_ms1  0/21  Ram=1
+         ÀÄ@delay_ms1  0/21  Ram=1

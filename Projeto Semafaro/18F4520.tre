@@ -1,0 +1,15 @@
+ÀÄ18F4520
+   ÃÄMAIN  0/342  Ram=1
+   ³  ÃÄ??0??
+   ³  ÃÄespera  0/32  Ram=0
+   ³  ³  ÀÄ@delay_ms1  0/40  Ram=1
+   ³  ÃÄespera  0/32  Ram=0
+   ³  ³  ÀÄ@delay_ms1  0/40  Ram=1
+   ³  ÃÄcontagem  0/84  Ram=2
+   ³  ³  ÀÄ@delay_ms1  0/40  Ram=1
+   ³  ÃÄ@delay_ms1  0/40  Ram=1
+   ³  ÃÄespera  0/32  Ram=0
+   ³  ³  ÀÄ@delay_ms1  0/40  Ram=1
+   ³  ÀÄespera  0/32  Ram=0
+   ³     ÀÄ@delay_ms1  0/40  Ram=1
+   ÀÄinterrupt  0/30  Ram=0

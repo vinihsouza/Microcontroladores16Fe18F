@@ -1,0 +1,267 @@
+CCS PCM C Compiler, Version 4.074, 38112               28-mar-18 21:50
+
+               Filename: lcd_adc.lst
+
+               ROM used: 179 words (2%)
+                         Largest free fragment is 2048
+               RAM used: 8 (2%) at main() level
+                         10 (3%) worst case
+               Stack:    2 locations
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   05C
+0003:  NOP
+.................... #include <16f877a.h>								//Inclui biblioteca do microcontrolador 16f877a 
+.................... //////// Standard Header file for the PIC16F877A device //////////////// 
+.................... #device PIC16F877A 
+.................... #list 
+....................  
+.................... #fuses xt,nowdt,noprotect,put,brownout,nolvp,nocpd,nowrt 	//Configuração dos fusíveis 
+.................... #use delay(clock=4000000)							//Usa crystal de 4MHz 
+*
+0004:  MOVLW  23
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   018
+000A:  MOVLW  01
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  4A
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  GOTO   016
+0016:  DECFSZ 00,F
+0017:  GOTO   00A
+0018:  RETLW  00
+.................... #byte porta = 0x05									//Diz que o port_a ficara no espaço 0x05 da memoria 
+.................... #byte portb = 0x06									//Diz que o port_b ficara no espaço 0x06 da memoria 
+.................... #byte portc = 0x07									//Diz que o port_c ficara no espaço 0x07 da memoria 
+.................... #byte portd = 0x08									//Diz que o port_d ficara no espaço 0x08 da memoria 
+.................... #byte porte = 0x09									//Diz que o port_e ficara no espaço 0x09 da memoria 
+.................... void poste (void); 
+.................... #define VM pin_b0 
+.................... #define AM pin_b1 
+.................... #define VD pin_b2 
+.................... #define DIA pin_a5 
+.................... #define ENT pin_a4 
+.................... #define SAI pin_a3 
+.................... int a; 
+.................... void main()											//Inicia função Inicial 
+.................... { 
+*
+005C:  CLRF   04
+005D:  BCF    03.7
+005E:  MOVLW  1F
+005F:  ANDWF  03,F
+0060:  BSF    03.5
+0061:  BSF    1F.0
+0062:  BSF    1F.1
+0063:  BSF    1F.2
+0064:  BCF    1F.3
+0065:  MOVLW  07
+0066:  MOVWF  1C
+.................... 	set_tris_a(0xff);								//Configura todos os pinos do port_a como entrada 
+*
+006A:  MOVLW  FF
+006B:  BSF    03.5
+006C:  MOVWF  05
+.................... 	set_tris_b(0x00);								//Configura todos os pinos do port_b como saída 
+006D:  MOVLW  00
+006E:  MOVWF  06
+.................... 	set_tris_c(0xff);								//Configura todos os pinos do port_c como entrada 
+006F:  MOVLW  FF
+0070:  MOVWF  07
+0071:  BCF    03.5
+0072:  MOVWF  21
+.................... 	set_tris_d(0xff);								//Configura todos os pinos do port_d como entrada 
+0073:  BSF    03.5
+0074:  MOVWF  08
+.................... 	set_tris_e(0xf0);								//Configura todos os pinos do port_e como entrada	 
+0075:  BCF    09.0
+0076:  BCF    09.1
+0077:  BCF    09.2
+.................... 	output_b(0x00); 
+0078:  CLRF   06
+0079:  BCF    03.5
+007A:  CLRF   06
+.................... 	while (true) 
+.................... 	{	 
+.................... 		output_b(0x00); 
+007B:  BSF    03.5
+007C:  CLRF   06
+007D:  BCF    03.5
+007E:  CLRF   06
+.................... 		output_e(0x00); 
+007F:  BSF    03.5
+0080:  BCF    09.0
+0081:  BCF    09.1
+0082:  BCF    09.2
+0083:  BCF    03.5
+0084:  CLRF   09
+.................... 		output_high(VM); 
+0085:  BSF    03.5
+0086:  BCF    06.0
+0087:  BCF    03.5
+0088:  BSF    06.0
+.................... 		for(a=0;a<=14;a++) 
+0089:  CLRF   20
+008A:  MOVF   20,W
+008B:  SUBLW  0E
+008C:  BTFSS  03.0
+008D:  GOTO   091
+.................... 		{ 
+.................... 			poste(); 
+008E:  CALL   019
+.................... 		} 
+008F:  INCF   20,F
+0090:  GOTO   08A
+.................... 		output_b(0x00); 
+0091:  BSF    03.5
+0092:  CLRF   06
+0093:  BCF    03.5
+0094:  CLRF   06
+.................... 		output_high(VD); 
+0095:  BSF    03.5
+0096:  BCF    06.2
+0097:  BCF    03.5
+0098:  BSF    06.2
+.................... 		for(a=0;a<=10;a++) 
+0099:  CLRF   20
+009A:  MOVF   20,W
+009B:  SUBLW  0A
+009C:  BTFSS  03.0
+009D:  GOTO   0A1
+.................... 		{ 
+.................... 			poste(); 
+009E:  CALL   019
+.................... 		} 
+009F:  INCF   20,F
+00A0:  GOTO   09A
+.................... 		output_b(0x00); 
+00A1:  BSF    03.5
+00A2:  CLRF   06
+00A3:  BCF    03.5
+00A4:  CLRF   06
+.................... 		output_high(AM); 
+00A5:  BSF    03.5
+00A6:  BCF    06.1
+00A7:  BCF    03.5
+00A8:  BSF    06.1
+.................... 		for(a=0;a<=4;a++) 
+00A9:  CLRF   20
+00AA:  MOVF   20,W
+00AB:  SUBLW  04
+00AC:  BTFSS  03.0
+00AD:  GOTO   0B1
+.................... 		{ 
+.................... 			poste(); 
+00AE:  CALL   019
+.................... 		} 
+00AF:  INCF   20,F
+00B0:  GOTO   0AA
+.................... 	} 
+00B1:  GOTO   07B
+.................... } 
+.................... void poste() 
+.................... { 
+00B2:  SLEEP
+.................... 	if(!input(DIA)) 
+*
+0019:  BSF    03.5
+001A:  BSF    05.5
+001B:  BCF    03.5
+001C:  BTFSC  05.5
+001D:  GOTO   025
+.................... 	{ 
+.................... 		output_c(0xff); 
+001E:  MOVLW  00
+001F:  MOVWF  21
+0020:  BSF    03.5
+0021:  CLRF   07
+0022:  MOVLW  FF
+0023:  BCF    03.5
+0024:  MOVWF  07
+.................... 	} 
+.................... 	if(input(DIA)) 
+0025:  BSF    03.5
+0026:  BSF    05.5
+0027:  BCF    03.5
+0028:  BTFSS  05.5
+0029:  GOTO   030
+.................... 	{ 
+.................... 		output_c(0x00); 
+002A:  MOVLW  00
+002B:  MOVWF  21
+002C:  BSF    03.5
+002D:  CLRF   07
+002E:  BCF    03.5
+002F:  CLRF   07
+.................... 	} 
+.................... 	if(!input(ENT)) 
+0030:  BSF    03.5
+0031:  BSF    05.4
+0032:  BCF    03.5
+0033:  BTFSC  05.4
+0034:  GOTO   03C
+.................... 	{ 
+.................... 		output_e(0xff); 
+0035:  BSF    03.5
+0036:  BCF    09.0
+0037:  BCF    09.1
+0038:  BCF    09.2
+0039:  MOVLW  FF
+003A:  BCF    03.5
+003B:  MOVWF  09
+.................... 	} 
+.................... 	delay_ms(499); 
+003C:  MOVLW  02
+003D:  MOVWF  22
+003E:  MOVLW  F9
+003F:  MOVWF  23
+0040:  CALL   004
+0041:  DECFSZ 22,F
+0042:  GOTO   03E
+0043:  MOVLW  01
+0044:  MOVWF  23
+0045:  CALL   004
+.................... 	if(!input(SAI)) 
+0046:  BSF    03.5
+0047:  BSF    05.3
+0048:  BCF    03.5
+0049:  BTFSC  05.3
+004A:  GOTO   05B
+.................... 	{	 
+.................... 		delay_ms(500); 
+004B:  MOVLW  02
+004C:  MOVWF  22
+004D:  MOVLW  FA
+004E:  MOVWF  23
+004F:  CALL   004
+0050:  DECFSZ 22,F
+0051:  GOTO   04D
+.................... 		output_e(0x00); 
+0052:  BSF    03.5
+0053:  BCF    09.0
+0054:  BCF    09.1
+0055:  BCF    09.2
+0056:  BCF    03.5
+0057:  CLRF   09
+.................... 		a = a++; 
+0058:  MOVF   20,W
+0059:  INCF   20,F
+005A:  MOVWF  20
+.................... 	} 
+.................... } 
+005B:  RETLW  00
+
+Configuration Fuses:
+   Word  1: 3F71   XT NOWDT PUT NODEBUG NOPROTECT BROWNOUT NOLVP NOCPD NOWRT

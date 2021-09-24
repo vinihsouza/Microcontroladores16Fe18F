@@ -1,0 +1,452 @@
+CCS PCH C Compiler, Version 4.074, 38112               30-mar-19 23:15
+
+               Filename: 18F4520.lst
+
+               ROM used: 682 bytes (2%)
+                         Largest free fragment is 32082
+               RAM used: 33 (2%) at main() level
+                         34 (2%) worst case
+               Stack:    3 worst case (2 in main + 1 for interrupts)
+
+*
+0000:  GOTO   0158
+*
+0008:  MOVWF  05
+000A:  MOVFF  FD8,06
+000E:  MOVFF  FE0,07
+0012:  MOVLB  0
+0014:  MOVFF  FE9,0D
+0018:  MOVFF  FEA,08
+001C:  MOVFF  FE1,09
+0020:  MOVFF  FE2,0A
+0024:  MOVFF  FD9,0B
+0028:  MOVFF  FDA,0C
+002C:  MOVFF  FF3,14
+0030:  MOVFF  FF4,15
+0034:  MOVFF  FFA,16
+0038:  MOVFF  00,0F
+003C:  MOVFF  01,10
+0040:  MOVFF  02,11
+0044:  MOVFF  03,12
+0048:  MOVFF  04,13
+004C:  BTFSS  FF2.4
+004E:  GOTO   0058
+0052:  BTFSC  FF2.1
+0054:  GOTO   009E
+0058:  MOVFF  0F,00
+005C:  MOVFF  10,01
+0060:  MOVFF  11,02
+0064:  MOVFF  12,03
+0068:  MOVFF  13,04
+006C:  BSF    0E.7
+006E:  MOVFF  0D,FE9
+0072:  MOVFF  08,FEA
+0076:  MOVFF  09,FE1
+007A:  MOVFF  0A,FE2
+007E:  MOVFF  0B,FD9
+0082:  MOVFF  0C,FDA
+0086:  MOVFF  14,FF3
+008A:  MOVFF  15,FF4
+008E:  MOVFF  16,FFA
+0092:  MOVF   05,W
+0094:  MOVFF  07,FE0
+0098:  MOVFF  06,FD8
+009C:  RETFIE 0
+.................... #include <18F4520.h> 
+.................... //////// Standard Header file for the PIC18F4520 device //////////////// 
+.................... #device PIC18F4520 
+.................... #list 
+....................  
+.................... #FUSES XT														//Utilização de cristal externo >=4MHz 
+.................... #FUSES NOWDT 													//Sem Timer Cão de Guarda 
+.................... #FUSES NOPUT 													//Sem timer de alimentação 
+.................... #FUSES NOPROTECT 												//Epprom desprotegida (permite a leitura) 
+.................... #FUSES NOBROWNOUT 												//Brownout desabilitado 
+.................... #FUSES NOLVP 													//Programação em baixa tensão desabilitada 
+.................... #FUSES NOCPD 													//Código desprotegido (permite a leitura) 
+.................... #use delay(clock=4000000)										//Clock externo de 4MHz 
+*
+00BC:  CLRF   FEA
+00BE:  MOVLW  21
+00C0:  MOVWF  FE9
+00C2:  MOVF   FEF,W
+00C4:  BZ    00E2
+00C6:  MOVLW  01
+00C8:  MOVWF  01
+00CA:  CLRF   00
+00CC:  DECFSZ 00,F
+00CE:  BRA    00CC
+00D0:  DECFSZ 01,F
+00D2:  BRA    00CA
+00D4:  MOVLW  4A
+00D6:  MOVWF  00
+00D8:  DECFSZ 00,F
+00DA:  BRA    00D8
+00DC:  BRA    00DE
+00DE:  DECFSZ FEF,F
+00E0:  BRA    00C6
+00E2:  RETLW  00
+.................... int a,i,j,c,aant,t;												//Definição das variaveis do tipo inteiro 
+.................... long int aguard=50000;											//Definição da variavel do tipo long inteira () 
+.................... #define liga output_high(										//Define que o nome liga é igual ao comando output_high( 
+.................... #define desliga output_low(										//Define que o nome desliga é igual ao comando output_low( 
+.................... #define altera output_toggle(									//Define que o nome altera é igual ao comando output_toggle( 
+.................... #define ledcarverm pin_c0);										//Define que o nome ledcarverm é igual ao pino c0 
+.................... #define ledcaramar pin_c1);										//Define que o nome ledcaramar é igual ao pino c1 
+.................... #define ledcarverd pin_c2);										//Define que o nome ledcarverd é igual ao pino c2 
+.................... #define ledverdped pin_c3);										//Define que o nome ledverdped é igual ao pino c3 
+.................... #define ledvermped pin_c4);										//Define que o nome ledvermped é igual ao pino c4 
+.................... #INT_EXT//														//Função interrupção externa 
+.................... void interrupt ()												//Função interrupção externa 
+.................... {	 
+.................... 	if(aguard>=40000)											//Se a variavel aguard for maior que 40000 
+*
+009E:  MOVF   1F,W
+00A0:  SUBLW  9B
+00A2:  BC    00B6
+00A4:  XORLW  FF
+00A6:  BNZ   00AE
+00A8:  MOVF   1E,W
+00AA:  SUBLW  3F
+00AC:  BC    00B6
+.................... 	{ 
+.................... 		a = a + 1;												//Variavel a incrementa 1 em seu valor 
+00AE:  MOVLW  01
+00B0:  ADDWF  18,F
+.................... 		aguard=0;												//Variavel aguard passa a valer 0 
+00B2:  CLRF   1F
+00B4:  CLRF   1E
+.................... 	} 
+.................... } 
+00B6:  BCF    FF2.1
+00B8:  GOTO   0058
+.................... void contagem();												//Definição de uma função com nome de contagem 
+.................... void espera();													//Definição de uma função com nome de espera 
+.................... void main()														//Inicio da função principal 
+.................... { 
+*
+0158:  CLRF   FF8
+015A:  BCF    FD0.7
+015C:  BSF    0D.7
+015E:  CLRF   FEA
+0160:  CLRF   FE9
+0162:  MOVF   FC1,W
+0164:  ANDLW  C0
+0166:  IORLW  0F
+0168:  MOVWF  FC1
+016A:  MOVLW  07
+016C:  MOVWF  FB4
+016E:  MOVLW  50
+0170:  MOVWF  1E
+0172:  MOVLW  C3
+0174:  MOVWF  1F
+.................... 	clear_interrupt(INT_EXT);									//Limpa interrupção externa 
+0176:  BCF    FF2.1
+.................... 	enable_interrupts(GLOBAL);									//Inicializa a interrupção Global 
+0178:  MOVLW  C0
+017A:  IORWF  FF2,F
+.................... 	enable_interrupts(INT_EXT);									//Inicializa a interrupção externa 
+017C:  BSF    FF2.4
+.................... 	ext_int_edge(0,H_TO_L);										//Indica que a interrupção externa será no pino b0 e com borda de descida 
+017E:  BCF    FF1.6
+.................... 	set_tris_a(0xFF);											//Configura o port A como entrada 
+0180:  MOVLW  FF
+0182:  MOVWF  F92
+.................... 	set_tris_b(0xFF);											//Configura o port B como entrada 
+0184:  MOVWF  F93
+.................... 	set_tris_c(0xE0);											//Configura os pinos C0 a C4 como saida e os demais como entrada 
+0186:  MOVLW  E0
+0188:  MOVWF  F94
+.................... 	set_tris_d(0x90);											//Configura os pinos D0 a D5 como saida e os demais como entrada	 
+018A:  MOVLW  90
+018C:  MOVWF  F95
+.................... 	set_tris_e(0xFF);											//Configura o port E como entrada 
+018E:  BSF    F96.0
+0190:  BSF    F96.1
+0192:  BSF    F96.2
+....................     port_b_pullups(1);											//Aciona o pull up interno do port b 
+0194:  BCF    FF1.7
+.................... 	output_c(0);												//Zera a saída do port C 
+0196:  CLRF   F94
+0198:  CLRF   F8B
+.................... 	output_d(0);												//Zera a saída do port D 
+019A:  CLRF   F95
+019C:  CLRF   F8C
+.................... 	a = 0;														//Atribui o valor 0 para variavel a 
+019E:  CLRF   18
+.................... 	while(TRUE)													//Condição de laço infiniteo 
+.................... 	{ 
+.................... 		aant = a;												//Todo começo da repitição, atribui o valor da variavel a para variavel aant (a anterior) 
+01A0:  MOVFF  18,1C
+.................... 		switch(a) 
+.................... 		{ 
+01A4:  MOVF   18,W
+01A6:  BZ    01B8
+01A8:  XORLW  01
+01AA:  BZ    01DE
+01AC:  XORLW  03
+01AE:  BZ    0204
+01B0:  XORLW  01
+01B2:  BTFSC  FD8.2
+01B4:  BRA    027C
+01B6:  BRA    02A6
+.................... 			case 0:												//Caso o valor de a for igual a 0 
+.................... 				output_c(0);									//Zera a saida do port C 
+01B8:  CLRF   F94
+01BA:  CLRF   F8B
+.................... 				liga ledcaramar									//Liga o led Amarelo para o carro 
+01BC:  BCF    F94.1
+01BE:  BSF    F8B.1
+.................... 				liga ledvermped if(a>aant){break;}				//Liga o led vermelho para o pedestre, Se a for maior que a anterior, significa que foi a interrupção foi acionada e sai do case 
+01C0:  BCF    F94.4
+01C2:  BSF    F8B.4
+01C4:  MOVF   18,W
+01C6:  SUBWF  1C,W
+01C8:  BC    01CC
+01CA:  BRA    02AA
+.................... 				t=60;espera();if(a>aant){break;}				//Atribui o valor 60 para variavel t, Vai para função de espera Se a for maior que a anterior, sai do case 
+01CC:  MOVLW  3C
+01CE:  MOVWF  1D
+01D0:  RCALL  00E4
+01D2:  MOVF   18,W
+01D4:  SUBWF  1C,W
+01D6:  BC    01DA
+01D8:  BRA    02AA
+.................... 				a++;											//Incrementa 1 na variavel a 
+01DA:  INCF   18,F
+.................... 			break;												//Sai do Case 
+01DC:  BRA    02AA
+.................... 			case 1:												//Caso o valor de a for igual a 1 
+.................... 				output_c(0);									//Zera a saida do port C 
+01DE:  CLRF   F94
+01E0:  CLRF   F8B
+.................... 				liga ledcarverm									//Liga o led vermelho para o carro 
+01E2:  BCF    F94.0
+01E4:  BSF    F8B.0
+.................... 				liga ledvermped if(a>aant){break;}				//Liga o led vermelho para o pedestre, Se a for maior que aant, sai do case 
+01E6:  BCF    F94.4
+01E8:  BSF    F8B.4
+01EA:  MOVF   18,W
+01EC:  SUBWF  1C,W
+01EE:  BC    01F2
+01F0:  BRA    02AA
+.................... 				t=40;espera();if(a>aant){break;}				//Atribui o valor 40 para variavel t, Vai para função de espera, Se a for maior que aant sai do case 
+01F2:  MOVLW  28
+01F4:  MOVWF  1D
+01F6:  RCALL  00E4
+01F8:  MOVF   18,W
+01FA:  SUBWF  1C,W
+01FC:  BC    0200
+01FE:  BRA    02AA
+.................... 				a++;											//Incrementa 1 na variavel a 
+0200:  INCF   18,F
+.................... 			break;												//Sai do Case 
+0202:  BRA    02AA
+.................... 			case 2:												//Caso o valor de a for igual a 2 
+.................... 				output_c(0);									//Zera a saida do port C 
+0204:  CLRF   F94
+0206:  CLRF   F8B
+.................... 				liga ledcarverm									//Liga o led vermelho para o carro 
+0208:  BCF    F94.0
+020A:  BSF    F8B.0
+.................... 				liga ledverdped if(a>aant){break;}				//Liga o led verde para o pedestre, Se a for maior que aant, sai do case 
+020C:  BCF    F94.3
+020E:  BSF    F8B.3
+0210:  MOVF   18,W
+0212:  SUBWF  1C,W
+0214:  BC    0218
+0216:  BRA    02AA
+.................... 				output_d(2);									//Atribui o valor 1 para o pino RD2 
+0218:  CLRF   F95
+021A:  MOVLW  02
+021C:  MOVWF  F8C
+.................... 				contagem();										//Vai para função de contagem 
+021E:  BRA    0104
+.................... 				desliga ledverdped								//Desliga o led verde para o pedestre 
+0220:  BCF    F94.3
+0222:  BCF    F8B.3
+.................... 				liga ledvermped if(a>aant){break;}				//Liga o led vermelho para o pedestre, Se a for maior que aant, sai do case 
+0224:  BCF    F94.4
+0226:  BSF    F8B.4
+0228:  MOVF   18,W
+022A:  SUBWF  1C,W
+022C:  BC    0230
+022E:  BRA    02AA
+.................... 				for(i=0;i<6;i++)								//Para i=0, enquanto i for menor do que 6, incrementa 1 na variavel i 
+0230:  CLRF   19
+0232:  MOVF   19,W
+0234:  SUBLW  05
+0236:  BNC   025A
+.................... 				{ 
+.................... 					altera ledvermped							//Altera a saida do led vermelho pedestre 
+0238:  BCF    F94.4
+023A:  BTG    F8B.4
+.................... 					altera pin_d6);								//Altera a saida do pino d6(pino de BI do display de 7 segmentos) 
+023C:  BCF    F95.6
+023E:  BTG    F8C.6
+.................... 					delay_ms(500);aguard = aguard + 500;		//Espera 500 miliSegundos, incrementa 500 para variavel de aguard 
+0240:  MOVLW  02
+0242:  MOVWF  20
+0244:  MOVLW  FA
+0246:  MOVWF  21
+0248:  RCALL  00BC
+024A:  DECFSZ 20,F
+024C:  BRA    0244
+024E:  MOVLW  F4
+0250:  ADDWF  1E,F
+0252:  MOVLW  01
+0254:  ADDWFC 1F,F
+.................... 				} 
+0256:  INCF   19,F
+0258:  BRA    0232
+.................... 				liga ledvermped									//liga o led vermelho para pedestre 
+025A:  BCF    F94.4
+025C:  BSF    F8B.4
+.................... 				t=8;espera();if(a>aant){break;}					//Atribui o valor 8 para variavel t, Se a for maior que aant, sai do case 
+025E:  MOVLW  08
+0260:  MOVWF  1D
+0262:  RCALL  00E4
+0264:  MOVF   18,W
+0266:  SUBWF  1C,W
+0268:  BC    026C
+026A:  BRA    02AA
+.................... 				output_d(0);if(a>aant){break;}					//Zera a saida do port D, Se a for maior que aant, sai do case 
+026C:  CLRF   F95
+026E:  CLRF   F8C
+0270:  MOVF   18,W
+0272:  SUBWF  1C,W
+0274:  BC    0278
+0276:  BRA    02AA
+.................... 				a++;											//Incrementa 1 na variavel a 
+0278:  INCF   18,F
+.................... 			break;												//Sai do Case 
+027A:  BRA    02AA
+.................... 			case 3:												//Caso o valor de a for igual a 3 
+.................... 				output_c(0);output_d(0);						//Zera a saida do port C e D 
+027C:  CLRF   F94
+027E:  CLRF   F8B
+0280:  CLRF   F95
+0282:  CLRF   F8C
+.................... 				liga ledvermped									//Liga o led vermelho para pedestre 
+0284:  BCF    F94.4
+0286:  BSF    F8B.4
+.................... 				liga ledcarverd if(a>aant){break;}				//Liga o led verde para o carro 
+0288:  BCF    F94.2
+028A:  BSF    F8B.2
+028C:  MOVF   18,W
+028E:  SUBWF  1C,W
+0290:  BC    0294
+0292:  BRA    02AA
+.................... 				t=100;espera();if(a>aant){break;}				//Atribui o valor 100 para variavel 100, Vai para função de espera, Se a for maior que aant sai do case 
+0294:  MOVLW  64
+0296:  MOVWF  1D
+0298:  RCALL  00E4
+029A:  MOVF   18,W
+029C:  SUBWF  1C,W
+029E:  BC    02A2
+02A0:  BRA    02AA
+.................... 				a++;											//Incrementa 1 na variavel a 
+02A2:  INCF   18,F
+.................... 			break;												//Sai do case 
+02A4:  BRA    02AA
+.................... 			default:											//Caso o valor de seja diferente dos demais 
+.................... 				a = 0;											//Atribui 0 para variavel a 
+02A6:  CLRF   18
+.................... 			break;												//Sai do case 
+02A8:  BRA    02AA
+.................... 		} 
+.................... 	} 
+02AA:  BRA    01A0
+.................... } 
+.................... void contagem(void)												//Função de contagem do display de 7 segmentos 
+.................... { 
+02AC:  SLEEP 
+.................... 	i=2;j=0;c=0;												//Atribui o valor 2 para variavel i e 0 para variavel j e c 
+*
+0104:  MOVLW  02
+0106:  MOVWF  19
+0108:  CLRF   1A
+010A:  CLRF   1B
+.................... 	while(c<=20)												//Enquanto c for menor ou igual a 20 
+.................... 	{ 
+010C:  MOVF   1B,W
+010E:  SUBLW  14
+0110:  BNC   0154
+.................... 		output_d(i+32+64);										//Valor da saída do portd igual a i + 32 + 64 (32 valor do pino LE/STB do display 2) (64 valor de BI) 
+0112:  MOVLW  20
+0114:  ADDWF  19,W
+0116:  ADDLW  40
+0118:  CLRF   F95
+011A:  MOVWF  F8C
+.................... 	    output_high(pin_d4);									//Aciona o pino RD4 (LE/STB display 1) 
+011C:  BCF    F95.4
+011E:  BSF    F8C.4
+.................... 	    output_d(j+16+64);										//Valor da saída do portd igual a j + 16 + 64 (16 valor do pino LE/STB do display 1) (64 valor de BI) 
+0120:  MOVLW  10
+0122:  ADDWF  1A,W
+0124:  ADDLW  40
+0126:  CLRF   F95
+0128:  MOVWF  F8C
+.................... 	    output_high(pin_d5);									//Aciona o pino RD5 (LE/STB display 2) 
+012A:  BCF    F95.5
+012C:  BSF    F8C.5
+.................... 		delay_ms(1000);aguard = aguard + 1000;					//Aguarda 1 Segundo, acrescenta 1000 na variavel aguard 
+012E:  MOVLW  04
+0130:  MOVWF  20
+0132:  MOVLW  FA
+0134:  MOVWF  21
+0136:  RCALL  00BC
+0138:  DECFSZ 20,F
+013A:  BRA    0132
+013C:  MOVLW  E8
+013E:  ADDWF  1E,F
+0140:  MOVLW  03
+0142:  ADDWFC 1F,F
+.................... 		if(j==0){j=10;i--;}										//Se j for igual a 0, atribui 10 para variavel j, decrementa 1 da variavel i 
+0144:  MOVF   1A,F
+0146:  BNZ   014E
+0148:  MOVLW  0A
+014A:  MOVWF  1A
+014C:  DECF   19,F
+.................... 	    j--;c++;												//Decrementa 1 da variavel j, incrementa 1 da variavel c 
+014E:  DECF   1A,F
+0150:  INCF   1B,F
+.................... 	} 
+0152:  BRA    010C
+.................... } 
+0154:  GOTO   0220 (RETURN)
+.................... void espera(void)												//Função de espera (aguardar tempo enquanto outros led's ficam ligados/desligados) 
+.................... { 
+.................... 	while(t>0)													//Enquando t for maior que 0 
+.................... 	{ 
+*
+00E4:  MOVF   1D,F
+00E6:  BZ    0102
+.................... 		delay_ms(50);											//Espera 50 mili Segundos 
+00E8:  MOVLW  32
+00EA:  MOVWF  21
+00EC:  RCALL  00BC
+.................... 		aguard = aguard + 50;									//Incrementa 50 na variavel aguard 
+00EE:  MOVLW  32
+00F0:  ADDWF  1E,F
+00F2:  MOVLW  00
+00F4:  ADDWFC 1F,F
+.................... 		t--;if(a>aant){t=0;}									//Decrementa 1 da variavel t, Se a for maior que aant, então atribui 0 para variavel t 
+00F6:  DECF   1D,F
+00F8:  MOVF   18,W
+00FA:  SUBWF  1C,W
+00FC:  BTFSS  FD8.0
+00FE:  CLRF   1D
+.................... 	} 
+0100:  BRA    00E4
+.................... } 
+0102:  RETLW  00
+
+Configuration Fuses:
+   Word  1: 0100   XT NOIESO NOFCMEN RESERVED
+   Word  2: 1E19   NOBROWNOUT NOWDT BORV20 NOPUT WDT32768
+   Word  3: 8300   PBADEN CCP2C1 NOLPT1OSC MCLR RESERVED
+   Word  4: 0081   STVREN NODEBUG NOLVP NOXINST RESERVED
+   Word  5: C00F   NOPROTECT NOCPD NOCPB
+   Word  6: E00F   NOWRT NOWRTD NOWRTC NOWRTB
+   Word  7: 400F   NOEBTR NOEBTRB
